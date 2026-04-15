@@ -106,18 +106,22 @@ def create_sentiment_map(comments_df):
             is_calculable=True
         ),
         tooltip_opts=opts.TooltipOpts(
-            formatter="{b}<br/>情感得分: {c}",
+            formatter="{b}<br/>经纬度: {c}",
             background_color="rgba(0,0,0,0.7)",
             border_color="#fff"
         )
     )
 
-    return geo
+    # 不再返回图表对象，而是直接在当前函数里渲染它
+    geo.render("sentiment_map.html")
+    with open("sentiment_map.html", "r", encoding="utf-8") as f:
+        html_content = f.read()
+    st.components.v1.html(html_content, height=550)
+    return None  # 因为已经渲染了，所以不需要再返回
 
 
-sentiment_map = create_sentiment_map(comments_df)
-if sentiment_map:
-    components.html(sentiment_map.render_embed(), height=550)
+# 直接调用函数，它会自己把地图显示出来
+create_sentiment_map(comments_df)
 
 st.markdown("---")
 
