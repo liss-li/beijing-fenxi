@@ -590,29 +590,7 @@ elif page == "📋 综合分析报告":
         st.warning("当前时间范围内没有评论数据，请调整时间范围后重试。")
         st.stop()
 
-    # ==================== 新增：数据量过少时显示友好提示 ====================
-    if len(filtered_comments) < 30:
-        st.info(
-            f"💡 当前筛选后只有 {len(filtered_comments)} 条评论，数据量较少。为保证分析结果的可靠性，建议扩大时间范围（如调整开始时间或结束时间）后查看完整报告。")
-        # 仍然显示整体概况，但不执行后续高风险操作
-        st.markdown("## 一、整体概况")
-        total_comments = len(filtered_comments)
-        total_positive = len(filtered_comments[filtered_comments['sentiment'] == 'positive'])
-        avg_rate = total_positive / total_comments * 100 if total_comments > 0 else 0
 
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("总评论数", total_comments)
-        with col2:
-            st.metric("正面评论", total_positive)
-        with col3:
-            st.metric("平均好评率", f"{avg_rate:.1f}%")
-        with col4:
-            st.metric("覆盖景点", len(filtered_comments['spot_name'].unique()))
-
-        st.info("📊 排名、诊断和改进建议需要更多数据支撑，请扩大时间范围后查看。")
-        st.stop()  # 停止执行，避免报错
-    # ==================== 新增结束 ====================
 
     st.markdown("""
     <div class="report-header">
